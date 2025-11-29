@@ -75,7 +75,35 @@ The diffusion process uses 1000 steps, with 10 representative steps visualized.
 
 ## Results
 
-These four experiments collectively demonstrate how diffusion models work on toy 2D data projected into 3D space, systematically varying two key dimensions: data type (single-mode 2D Gaussian versus multi-modal 2D GMM) and transformation type (linear 3x2 matrix versus non-linear MLP). All experiments use 1000 diffusion steps to visualize both the forward process (where curved manifolds gradually transform into isotropic Gaussians through noise addition) and the reverse process (where isotropic Gaussians are decoded back into the original manifold structure through noise removal). The results show near-perfect reconstruction (MSE ~0.0001) and confirm that the final diffusion step produces a nearly isotropic Gaussian (std ratio ~1.0-1.07), demonstrating that the diffusion process successfully encodes curved manifolds into isotropic Gaussians and can decode them back to recover the original structure, regardless of whether the data is single-modal or multi-modal, and regardless of whether the transformation is linear or non-linear. This validates the core mechanism of diffusion models: gradual noise addition flattens complex manifolds, and the reverse process can faithfully reconstruct the original manifold structure.
+### Experiment Summaries
+
+**Experiment I: 2D Gaussian → Linear 3D → Diffusion**
+- **Data**: 2D Gaussian using eigendecomposition (`x = m + E*sqrt(lambda)*e`)
+- **Transform**: Linear 3x2 matrix (`xx = A*x`)
+- **Result**: MSE 0.000103, isotropic ratio 1.068
+- **Purpose**: Tests diffusion on a simple Gaussian manifold with a linear transformation
+
+**Experiment II: 2D GMM → Linear 3D → Diffusion**
+- **Data**: 2D Gaussian Mixture Model (3 components)
+- **Transform**: Linear 3x2 matrix (`xx = A*x`)
+- **Result**: MSE 0.000101, isotropic ratio 1.026
+- **Purpose**: Tests diffusion on a multi-modal distribution with a linear transformation
+
+**Experiment III: 2D Gaussian → MLP 3D → Diffusion**
+- **Data**: 2D Gaussian using eigendecomposition
+- **Transform**: Non-linear MLP (warps the manifold)
+- **Result**: MSE 0.000096, isotropic ratio 1.027
+- **Purpose**: Tests diffusion on a Gaussian manifold with a non-linear transformation
+
+**Experiment IV: 2D GMM → MLP 3D → Diffusion**
+- **Data**: 2D Gaussian Mixture Model (3 components)
+- **Transform**: Non-linear MLP (warps the manifold)
+- **Result**: MSE 0.000100, isotropic ratio 1.011
+- **Purpose**: Tests diffusion on a multi-modal distribution with a non-linear transformation
+
+### Overall Summary
+
+These four experiments demonstrate diffusion on toy 2D data projected to 3D. They vary data type (single-mode 2D Gaussian vs multi-modal 2D GMM) and transformation (linear 3x2 matrix vs non-linear MLP). All use 1000 diffusion steps to show the forward process (curved manifold → isotropic Gaussian) and the reverse process (isotropic Gaussian → recovered manifold). Results show near-perfect reconstruction (MSE ~0.0001) and that the final step is close to isotropic (std ratio ~1.0–1.07), indicating the diffusion process can encode curved manifolds into isotropic Gaussians and decode them back, regardless of data modality or transformation type. This validates the core mechanism: gradual noise addition flattens the manifold, and the reverse process recovers the original structure.
 
 ## Key Concepts Demonstrated
 
